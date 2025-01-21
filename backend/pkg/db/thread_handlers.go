@@ -10,7 +10,7 @@ import (
 
 func GetThreads(w http.ResponseWriter, r *http.Request) {
     var threads []Thread
-    db.Preload("User").Preload("Tag").Preload("Comments").Find(&threads)
+    db.Preload("User").Preload("Tags").Preload("Comments").Find(&threads)
     json.NewEncoder(w).Encode(threads)
 }
 
@@ -18,7 +18,7 @@ func GetThread(w http.ResponseWriter, r *http.Request) {
     params := mux.Vars(r)
     id, _ := strconv.Atoi(params["id"])
     var thread Thread
-    db.Preload("User").Preload("Tag").Preload("Comments").First(&thread, id)
+    db.Preload("User").Preload("Tags").Preload("Comments").First(&thread, id)
     json.NewEncoder(w).Encode(thread)
 }
 

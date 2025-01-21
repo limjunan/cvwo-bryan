@@ -21,6 +21,7 @@ func Seed(DB *gorm.DB) {
     tags := []Tag{
         {Name: "Tag1"},
         {Name: "Tag2"},
+        {Name: "Tag3"},
     }
     for _, tag := range tags {
         if err := DB.Create(&tag).Error; err != nil {
@@ -30,16 +31,17 @@ func Seed(DB *gorm.DB) {
 
     // Fetch the created users and tags to get their IDs
     var user1, user2 User
-    var tag1, tag2 Tag
+    var tag1, tag2, tag3 Tag
     DB.Where("username = ?", "user1").First(&user1)
     DB.Where("username = ?", "user2").First(&user2)
     DB.Where("name = ?", "Tag1").First(&tag1)
     DB.Where("name = ?", "Tag2").First(&tag2)
+    DB.Where("name = ?", "Tag3").First(&tag3)
 
-    // Create initial threads
+    // Create initial threads with multiple tags
     threads := []Thread{
-        {Title: "Thread 1", Content: "Content for thread 1", UserID: user1.ID, TagID: tag1.ID},
-        {Title: "Thread 2", Content: "Content for thread 2", UserID: user2.ID, TagID: tag2.ID},
+        {Title: "Thread 1", Content: "Content for thread 1", UserID: user1.ID, Tags: []Tag{tag1, tag2}},
+        {Title: "Thread 2", Content: "Content for thread 2", UserID: user2.ID, Tags: []Tag{tag2, tag3}},
     }
     for _, thread := range threads {
         if err := DB.Create(&thread).Error; err != nil {
@@ -47,12 +49,10 @@ func Seed(DB *gorm.DB) {
         }
     }
 
-    // Fetch the created threads to get their IDs
+    // Create initial comments
     var thread1, thread2 Thread
     DB.Where("title = ?", "Thread 1").First(&thread1)
     DB.Where("title = ?", "Thread 2").First(&thread2)
-
-    // Create initial comments
     comments := []Comment{
         {Content: "Comment 1", UserID: user1.ID, ThreadID: thread1.ID},
         {Content: "Comment 2", UserID: user2.ID, ThreadID: thread2.ID},
@@ -70,6 +70,9 @@ func Unseed(DB *gorm.DB) {
     // Delete all records from the tables in the correct order
     if err := DB.Exec("DELETE FROM comments").Error; err != nil {
         log.Printf("Failed to delete comments: %v", err)
+    }
+    if err := DB.Exec("DELETE FROM threads_tags").Error; err != nil {
+        log.Printf("Failed to delete threads_tags: %v", err)
     }
     if err := DB.Exec("DELETE FROM threads").Error; err != nil {
         log.Printf("Failed to delete threads: %v", err)

@@ -17,8 +17,7 @@ type Thread struct {
     Content  string
     UserID   uint
     User     User
-    TagID    uint
-    Tag      Tag
+    Tags     []Tag `gorm:"many2many:thread_tags;"`
     Comments []Comment
 }
 
@@ -34,5 +33,5 @@ type Comment struct {
 type Tag struct {
     gorm.Model
     Name    string `gorm:"unique"`
-    Threads []Thread
+    Threads []Thread `gorm:"many2many:thread_tags;"`
 }
