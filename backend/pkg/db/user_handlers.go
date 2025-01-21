@@ -17,7 +17,7 @@ func SetDB(database *gorm.DB) {
 
 func GetUsers(w http.ResponseWriter, r *http.Request) {
     var users []User
-    db.Find(&users)
+    db.Preload("Threads").Preload("Comments").Find(&users)
     json.NewEncoder(w).Encode(users)
 }
 
@@ -25,7 +25,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
     params := mux.Vars(r)
     id, _ := strconv.Atoi(params["id"])
     var user User
-    db.First(&user, id)
+    db.Preload("Threads").Preload("Comments").First(&user, id)
     json.NewEncoder(w).Encode(user)
 }
 
@@ -51,5 +51,5 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
     id, _ := strconv.Atoi(params["id"])
     var user User
     db.Delete(&user, id)
-    json.NewEncoder(w).Encode("User deleted")
+    json.NewEncoder(w).Encode("User deleted successfully")
 }

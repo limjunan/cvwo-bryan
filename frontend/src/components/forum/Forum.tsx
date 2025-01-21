@@ -15,10 +15,12 @@ interface ThreadData {
   Title: string;
   Content: string;
   UserID: number;
+  User: { Username: string };
   TagID: number;
+  Tag: { Name: string };
   CreatedAt: string;
   UpdatedAt: string;
-  Comments: Comment[];
+  Comments: Comment[] | null;
 }
 
 const Forum: React.FC = () => {
@@ -30,6 +32,7 @@ const Forum: React.FC = () => {
       .then((response) => {
         setThreads(response.data);
         console.log(response.data);
+        console.log("threads.comments", response.data[0].Comments);
       })
       .catch((error) => {
         console.error("There was an error fetching the threads!", error);
@@ -46,8 +49,8 @@ const Forum: React.FC = () => {
             key={thread.ID}
             title={thread.Title}
             content={thread.Content}
-            userId={thread.UserID}
-            tagId={thread.TagID}
+            user={thread.User}
+            tag={thread.Tag}
             createdAt={thread.CreatedAt}
             updatedAt={thread.UpdatedAt}
             comments={thread.Comments}

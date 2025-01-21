@@ -64,5 +64,4 @@ func Init() {
     log.Println("Migrations ran successfully")
 
     SetDB(DB)
-    Seed()
 }

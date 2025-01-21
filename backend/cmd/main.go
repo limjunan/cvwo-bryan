@@ -1,16 +1,35 @@
 package main
 
 import (
+    "flag"
     "log"
     "net/http"
-    // "github.com/gorilla/mux"
     "github.com/rs/cors"
     "cvwo-bryan/backend/pkg/db"
 )
 
 func main() {
+    // Command-line flags to seed or unseed the database
+    seed := flag.Bool("seed", false, "Seed the database")
+    unseed := flag.Bool("unseed", false, "Unseed the database")
+    flag.Parse()
+
     // Initialize the database
     db.Init()
+
+    // Run migrations
+    err := db.DB.AutoMigrate(&db.User{}, &db.Thread{}, &db.Comment{}, &db.Tag{})
+    if err != nil {
+        log.Fatal("Failed to run migrations:", err)
+    }
+
+    if *seed {
+        // Seed the database
+        db.Seed(db.DB)
+    } else if *unseed {
+        // Unseed the database
+        db.Unseed(db.DB)
+    }
 
     // Initialize the routes
     router := db.InitializeRoutes()
