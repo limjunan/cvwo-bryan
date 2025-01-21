@@ -53,6 +53,12 @@ const Forum: React.FC = () => {
     );
   };
 
+  const filteredThreads = threads.filter((thread) =>
+    selectedTags.every((tag) =>
+      thread.Tags.some((threadTag) => threadTag.Name === tag)
+    )
+  );
+
   return (
     <div>
       <Header />
@@ -72,7 +78,7 @@ const Forum: React.FC = () => {
               ))}
             </div>
           </div>
-          {threads.map((thread) => (
+          {filteredThreads.map((thread) => (
             <Thread
               key={thread.ID}
               title={thread.Title}
