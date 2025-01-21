@@ -8,11 +8,16 @@ interface Comment {
   CreatedAt: string;
 }
 
+interface TagProps {
+  ID: number;
+  Name: string;
+}
+
 interface ThreadProps {
   title: string;
   content: string;
   user: { Username: string };
-  tag: { Name: string };
+  tags: TagProps[];
   createdAt: string;
   updatedAt: string;
   comments: Comment[] | null;
@@ -22,7 +27,7 @@ const Thread: React.FC<ThreadProps> = ({
   title,
   content,
   user,
-  tag,
+  tags,
   createdAt,
   updatedAt,
   comments,
@@ -32,7 +37,10 @@ const Thread: React.FC<ThreadProps> = ({
       <h2 className="text-2xl font-bold mb-2">{title}</h2>
       <p className="text-gray-700 mb-4">{content}</p>
       <div className="text-sm text-gray-500">
-        <span>Posted by {user.Username}</span> | <Tag name={tag.Name} />
+        <span>Posted by {user.Username}</span> |{" "}
+        {tags.map((tag) => (
+          <Tag key={tag.ID} name={tag.Name} />
+        ))}
       </div>
       <div className="text-sm text-gray-500">
         <span>Created at: {new Date(createdAt).toLocaleString()}</span> |{" "}
