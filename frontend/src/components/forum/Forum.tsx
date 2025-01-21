@@ -3,6 +3,7 @@ import api from "../../services/api";
 import Thread from "./Thread";
 import Header from "../Header";
 import TagSidebar from "./Tag-Sidebar";
+import BtnTag from "./BtnTag";
 
 interface Comment {
   ID: number;
@@ -30,6 +31,7 @@ interface ThreadData {
 
 const Forum: React.FC = () => {
   const [threads, setThreads] = useState<ThreadData[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   useEffect(() => {
     api
@@ -43,12 +45,33 @@ const Forum: React.FC = () => {
       });
   }, []);
 
+  const handleTagClick = (tagName: string) => {
+    setSelectedTags((prevSelectedTags) =>
+      prevSelectedTags.includes(tagName)
+        ? prevSelectedTags.filter((tag) => tag !== tagName)
+        : [...prevSelectedTags, tagName]
+    );
+  };
+
   return (
     <div>
       <Header />
       <div className="container mx-auto py-6 flex">
         <div className="w-3/4">
-          <h1 className="text-3xl font-bold mb-6">Threads</h1>
+          <h1 className="text-3xl font-bold">Threads</h1>
+          <div className="my-4 flex flex-row items-center">
+            <span className="text-l font-bold mr-2">Filters: </span>
+            <div className="flex flex-wrap justify-center items-center">
+              {selectedTags.map((tag) => (
+                <BtnTag
+                  key={tag}
+                  name={tag}
+                  remove={true}
+                  onClick={() => handleTagClick(tag)}
+                />
+              ))}
+            </div>
+          </div>
           {threads.map((thread) => (
             <Thread
               key={thread.ID}
@@ -63,7 +86,7 @@ const Forum: React.FC = () => {
           ))}
         </div>
         <div className="w-1/4">
-          <TagSidebar />
+          <TagSidebar tags={selectedTags} onTagClick={handleTagClick} />
         </div>
       </div>
     </div>
