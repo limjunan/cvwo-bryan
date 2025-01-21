@@ -46,23 +46,24 @@ const Thread: React.FC<ThreadProps> = ({
         <span>Created at: {new Date(createdAt).toLocaleString()}</span> |{" "}
         <span>Updated at: {new Date(updatedAt).toLocaleString()}</span>
       </div>
-      {comments && comments.length > 0 && (
+      {comments && (
         <div className="mt-4">
-          <h3 className="text-xl font-semibold mb-2">Comments</h3>
-          {comments.map((comment) => (
-            <div
-              key={comment.ID}
-              className="border-t border-gray-200 pt-2 mt-2"
-            >
-              <p className="text-gray-700">{comment.Content}</p>
-              <div className="text-sm text-gray-500">
-                <span>Posted by User {comment.UserID}</span> |{" "}
-                <span>
-                  Created at: {new Date(comment.CreatedAt).toLocaleString()}
-                </span>
+          <div className="border-t border-gray-300 pt-4">
+            <h3 className="text-l font-semibold mb-2">
+              {comments.length} Comment{comments.length !== 1 && "s"}
+            </h3>
+            {comments.map((comment) => (
+              <div key={comment.ID} className=" pt-2 mt-2">
+                <p className="text-sm text-gray-700">{comment.Content}</p>
+                <div className="text-sm text-gray-500">
+                  <span>Posted by User {comment.UserID}</span> |{" "}
+                  <span>
+                    Created at: {new Date(comment.CreatedAt).toLocaleString()}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </div>

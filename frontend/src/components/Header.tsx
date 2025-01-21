@@ -1,6 +1,7 @@
 import React from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { IoIosAdd } from "react-icons/io";
 
 const Header: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ const Header: React.FC = () => {
         <h1 className="text-4xl font-bold">Gossip for CVWO</h1>
         <Input placeholder="Search" className="w-1/2" />
         <Button className="ml-2" variant="outline">
-          Create Thread
+          <IoIosAdd size={32} /> Create Thread
         </Button>
       </div>
       <div className="border-b border-gray-200 "></div>
