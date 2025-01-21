@@ -1,21 +1,20 @@
 package main
 
 import (
-    "fmt"
-	"net/http"
+    "log"
+    "net/http"
+
     "cvwo-bryan/backend/pkg/db"
 )
 
 func main() {
+    // Initialize the database
     db.Init()
 
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "Hello, World!")
-    })
+    // Initialize the routes
+    router := db.InitializeRoutes()
 
-    fmt.Println("Server is running on port 8080")
-    if err := http.ListenAndServe(":8080", nil); err != nil {
-        fmt.Println("Failed to start server:", err)
- 
-	}
+    // Start the server
+    log.Println("Server is running on port 8080")
+    log.Fatal(http.ListenAndServe(":8080", router))
 }
