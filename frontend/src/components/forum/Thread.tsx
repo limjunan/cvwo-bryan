@@ -1,4 +1,5 @@
 import React from "react";
+import Tag from "./Tag";
 
 interface Comment {
   ID: number;
@@ -31,7 +32,7 @@ const Thread: React.FC<ThreadProps> = ({
       <h2 className="text-2xl font-bold mb-2">{title}</h2>
       <p className="text-gray-700 mb-4">{content}</p>
       <div className="text-sm text-gray-500">
-        <span>Posted by {user.Username}</span> | <span>Tag: {tag.Name}</span>
+        <span>Posted by {user.Username}</span> | <Tag name={tag.Name} />
       </div>
       <div className="text-sm text-gray-500">
         <span>Created at: {new Date(createdAt).toLocaleString()}</span> |{" "}
