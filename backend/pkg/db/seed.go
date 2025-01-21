@@ -42,6 +42,8 @@ func Seed(DB *gorm.DB) {
     threads := []Thread{
         {Title: "Thread 1", Content: "Content for thread 1", UserID: user1.ID, Tags: []Tag{tag1, tag2}},
         {Title: "Thread 2", Content: "Content for thread 2", UserID: user2.ID, Tags: []Tag{tag2, tag3}},
+        {Title: "Thread 3", Content: "Content for thread 3", UserID: user1.ID, Tags: []Tag{tag1, tag3}},
+        {Title: "Thread 4", Content: "Content for thread 4", UserID: user2.ID, Tags: []Tag{tag1}},
     }
     for _, thread := range threads {
         if err := DB.Create(&thread).Error; err != nil {
@@ -49,13 +51,20 @@ func Seed(DB *gorm.DB) {
         }
     }
 
-    // Create initial comments
-    var thread1, thread2 Thread
+    // Fetch the created threads to get their IDs
+    var thread1, thread2, thread3, thread4 Thread
     DB.Where("title = ?", "Thread 1").First(&thread1)
     DB.Where("title = ?", "Thread 2").First(&thread2)
+    DB.Where("title = ?", "Thread 3").First(&thread3)
+    DB.Where("title = ?", "Thread 4").First(&thread4)
+
+    // Create initial comments
     comments := []Comment{
         {Content: "Comment 1", UserID: user1.ID, ThreadID: thread1.ID},
         {Content: "Comment 2", UserID: user2.ID, ThreadID: thread2.ID},
+        {Content: "Comment 3", UserID: user1.ID, ThreadID: thread3.ID},
+        {Content: "Comment 4", UserID: user2.ID, ThreadID: thread3.ID},
+        {Content: "Comment 5", UserID: user1.ID, ThreadID: thread3.ID},
     }
     for _, comment := range comments {
         if err := DB.Create(&comment).Error; err != nil {
@@ -71,8 +80,8 @@ func Unseed(DB *gorm.DB) {
     if err := DB.Exec("DELETE FROM comments").Error; err != nil {
         log.Printf("Failed to delete comments: %v", err)
     }
-    if err := DB.Exec("DELETE FROM threads_tags").Error; err != nil {
-        log.Printf("Failed to delete threads_tags: %v", err)
+    if err := DB.Exec("DELETE FROM thread_tags").Error; err != nil {
+        log.Printf("Failed to delete thread_tags: %v", err)
     }
     if err := DB.Exec("DELETE FROM threads").Error; err != nil {
         log.Printf("Failed to delete threads: %v", err)

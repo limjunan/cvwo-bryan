@@ -33,7 +33,7 @@ const Thread: React.FC<ThreadProps> = ({
   comments,
 }) => {
   return (
-    <div className="border border-gray-300 rounded-lg p-4 mb-4">
+    <div className="border border-gray-300 bg-white rounded-lg p-4 mb-4">
       <h2 className="text-2xl font-bold mb-2">{title}</h2>
       <p className="text-gray-700 mb-4">{content}</p>
       <div className="text-sm text-gray-500">

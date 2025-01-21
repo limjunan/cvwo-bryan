@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../../services/api";
 import Thread from "./Thread";
 import Header from "../Header";
+import TagSidebar from "./Tag-Sidebar";
 
 interface Comment {
   ID: number;
@@ -45,20 +46,25 @@ const Forum: React.FC = () => {
   return (
     <div>
       <Header />
-      <div className="container mx-auto py-6">
-        <h1 className="text-3xl font-bold mb-6">Threads</h1>
-        {threads.map((thread) => (
-          <Thread
-            key={thread.ID}
-            title={thread.Title}
-            content={thread.Content}
-            user={thread.User}
-            tags={thread.Tags}
-            createdAt={thread.CreatedAt}
-            updatedAt={thread.UpdatedAt}
-            comments={thread.Comments}
-          />
-        ))}
+      <div className="container mx-auto py-6 flex">
+        <div className="w-3/4">
+          <h1 className="text-3xl font-bold mb-6">Threads</h1>
+          {threads.map((thread) => (
+            <Thread
+              key={thread.ID}
+              title={thread.Title}
+              content={thread.Content}
+              user={thread.User}
+              tags={thread.Tags}
+              createdAt={thread.CreatedAt}
+              updatedAt={thread.UpdatedAt}
+              comments={thread.Comments}
+            />
+          ))}
+        </div>
+        <div className="w-1/4">
+          <TagSidebar />
+        </div>
       </div>
     </div>
   );
