@@ -6,7 +6,7 @@ import Forum from "./components/forum/Forum";
 const App: React.FC = () => {
   return (
     <Router>
-      <div>
+      <div className="bg-gray-50 min-h-screen">
         <Routes>
           <Route path="/users" element={<UserList />} />
           <Route path="/forum" element={<Forum />} />
