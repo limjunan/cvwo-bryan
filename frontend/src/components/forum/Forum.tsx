@@ -1,84 +1,68 @@
-import React, { useEffect, useState } from "react";
-import api from "../../services/api";
-import Thread from "./Thread";
+import React, { useState, useEffect } from "react";
 import Header from "../Header";
-import TagSidebar from "./Tag-Sidebar";
-import BtnTag from "./BtnTag";
 import Login from "../auth/Login";
-
-interface Comment {
-  ID: number;
-  Content: string;
-  UserID: number;
-  CreatedAt: string;
-}
+import BtnTag from "./BtnTag";
+import Thread from "./Thread";
+import TagSidebar from "./Tag-Sidebar";
+import api from "../../services/api";
 
 interface Tag {
   ID: number;
   Name: string;
+  Color: string;
 }
 
-interface ThreadData {
+interface User {
+  Username: string;
+}
+
+interface Comment {
+  ID: number;
+  Content: string;
+  User: User;
+  CreatedAt: string;
+}
+
+interface Thread {
   ID: number;
   Title: string;
   Content: string;
-  UserID: number;
-  User: { Username: string };
+  User: User;
   Tags: Tag[];
   CreatedAt: string;
   UpdatedAt: string;
-  Comments: Comment[] | null;
+  Comments: Comment[];
 }
 
 const Forum: React.FC = () => {
-  const [threads, setThreads] = useState<ThreadData[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [threads, setThreads] = useState<Thread[]>([]);
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    const fetchThreads = async () => {
+      const response = await api.get("/threads");
+      setThreads(response.data);
+    };
+
     const token = localStorage.getItem("token");
     if (token) {
       setIsAuthenticated(true);
+      fetchThreads();
     }
   }, []);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      api
-        .get("/api/threads")
-        .then((response) => {
-          setThreads(response.data);
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error("There was an error fetching the threads!", error);
-        });
-    }
-  }, [isAuthenticated]);
-
-  useEffect(() => {
-    api
-      .get("/threads")
-      .then((response) => {
-        setThreads(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the threads!", error);
-      });
-  }, []);
-
-  const handleTagClick = (tagName: string) => {
-    setSelectedTags((prevSelectedTags) =>
-      prevSelectedTags.includes(tagName)
-        ? prevSelectedTags.filter((tag) => tag !== tagName)
-        : [...prevSelectedTags, tagName]
+  const handleTagClick = (tag: Tag) => {
+    setSelectedTags((prevTags) =>
+      prevTags.includes(tag)
+        ? prevTags.filter((t) => t.ID !== tag.ID)
+        : [...prevTags, tag]
     );
   };
 
   const filteredThreads = threads.filter((thread) =>
     selectedTags.every((tag) =>
-      thread.Tags.some((threadTag) => threadTag.Name === tag)
+      thread.Tags.some((threadTag) => threadTag.Name === tag.Name)
     )
   );
 
@@ -97,8 +81,9 @@ const Forum: React.FC = () => {
             <div className="flex flex-wrap justify-center items-center gap-2">
               {selectedTags.map((tag) => (
                 <BtnTag
-                  key={tag}
-                  name={tag}
+                  key={tag.ID}
+                  name={tag.Name}
+                  color={tag.Color}
                   remove={true}
                   onClick={() => handleTagClick(tag)}
                 />
@@ -107,6 +92,7 @@ const Forum: React.FC = () => {
           </div>
           {filteredThreads.map((thread) => (
             <Thread
+              ID={thread.ID}
               key={thread.ID}
               title={thread.Title}
               content={thread.Content}
@@ -119,7 +105,7 @@ const Forum: React.FC = () => {
           ))}
         </div>
         <div className="w-1/4">
-          <TagSidebar tags={selectedTags} onTagClick={handleTagClick} />
+          <TagSidebar selectedTags={selectedTags} onTagClick={handleTagClick} />
         </div>
       </div>
     </div>

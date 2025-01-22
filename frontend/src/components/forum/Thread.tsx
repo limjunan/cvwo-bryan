@@ -4,16 +4,18 @@ import Tag from "./Tag";
 interface Comment {
   ID: number;
   Content: string;
-  UserID: number;
+  User: { Username: string };
   CreatedAt: string;
 }
 
 interface TagProps {
   ID: number;
   Name: string;
+  Color: string;
 }
 
 interface ThreadProps {
+  ID: number;
   title: string;
   content: string;
   user: { Username: string };
@@ -36,27 +38,27 @@ const Thread: React.FC<ThreadProps> = ({
     <div className="border border-gray-300 bg-white rounded-lg p-4 mb-4">
       <h2 className="text-2xl font-bold mb-2">{title}</h2>
       <p className="text-gray-700 mb-4">{content}</p>
-      <div className="text-sm text-gray-500">
+      <div className="text-sm text-gray-500 mb-2">
         <span>Posted by {user.Username}</span> |{" "}
         {tags.map((tag) => (
-          <Tag key={tag.ID} name={tag.Name} />
+          <Tag key={tag.ID} name={tag.Name} color={tag.Color} />
         ))}
       </div>
-      <div className="text-sm text-gray-500">
+      <div className="text-sm text-gray-500 mb-2">
         <span>Created at: {new Date(createdAt).toLocaleString()}</span> |{" "}
         <span>Updated at: {new Date(updatedAt).toLocaleString()}</span>
       </div>
-      {comments && (
+      {comments && comments.length > 0 && (
         <div className="mt-4">
           <div className="border-t border-gray-300 pt-4">
             <h3 className="text-l font-semibold mb-2">
               {comments.length} Comment{comments.length !== 1 && "s"}
             </h3>
             {comments.map((comment) => (
-              <div key={comment.ID} className=" pt-2 mt-2">
+              <div key={comment.ID} className="pt-2 mt-2">
                 <p className="text-sm text-gray-700">{comment.Content}</p>
                 <div className="text-sm text-gray-500">
-                  <span>Posted by User {comment.UserID}</span> |{" "}
+                  <span>Posted by {comment.User.Username}</span> |{" "}
                   <span>
                     Created at: {new Date(comment.CreatedAt).toLocaleString()}
                   </span>

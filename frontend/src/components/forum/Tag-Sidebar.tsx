@@ -1,30 +1,35 @@
 import React, { useEffect, useState } from "react";
-import api from "../../services/api";
 import BtnTag from "./BtnTag";
+import api from "../../services/api";
 
-interface TagData {
+interface Tag {
   ID: number;
   Name: string;
+  Color: string;
 }
 
 interface TagSidebarProps {
-  tags: string[];
-  onTagClick: (tagName: string) => void;
+  selectedTags: Tag[];
+  onTagClick: (tag: Tag) => void;
 }
 
-const TagSidebar: React.FC<TagSidebarProps> = ({ tags, onTagClick }) => {
-  const [allTags, setAllTags] = useState<TagData[]>([]);
+const TagSidebar: React.FC<TagSidebarProps> = ({
+  selectedTags,
+  onTagClick,
+}) => {
+  const [allTags, setAllTags] = useState<Tag[]>([]);
 
   useEffect(() => {
-    api
-      .get("/tags")
-      .then((response) => {
+    const fetchTags = async () => {
+      try {
+        const response = await api.get("/tags");
         setAllTags(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("There was an error fetching the tags!", error);
-      });
+      }
+    };
+
+    fetchTags();
   }, []);
 
   return (
@@ -34,9 +39,10 @@ const TagSidebar: React.FC<TagSidebarProps> = ({ tags, onTagClick }) => {
         {allTags.map((tag) => (
           <BtnTag
             key={tag.ID}
-            remove={false}
+            remove={selectedTags.includes(tag)}
             name={tag.Name}
-            onClick={() => onTagClick(tag.Name)}
+            color={tag.Color}
+            onClick={() => onTagClick(tag)}
           />
         ))}
       </div>
