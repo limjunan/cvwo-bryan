@@ -4,6 +4,7 @@ import Thread from "./Thread";
 import Header from "../Header";
 import TagSidebar from "./Tag-Sidebar";
 import BtnTag from "./BtnTag";
+import Login from "../auth/Login";
 
 interface Comment {
   ID: number;
@@ -32,6 +33,28 @@ interface ThreadData {
 const Forum: React.FC = () => {
   const [threads, setThreads] = useState<ThreadData[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      api
+        .get("/api/threads")
+        .then((response) => {
+          setThreads(response.data);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("There was an error fetching the threads!", error);
+        });
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     api
@@ -59,6 +82,10 @@ const Forum: React.FC = () => {
     )
   );
 
+  if (!isAuthenticated) {
+    return <Login />;
+  }
+
   return (
     <div>
       <Header />
@@ -66,8 +93,8 @@ const Forum: React.FC = () => {
         <div className="w-3/4">
           <h1 className="text-3xl font-bold">Threads</h1>
           <div className="my-4 flex flex-row items-center">
-            <span className="text-l font-bold mr-2">Filters: </span>
-            <div className="flex flex-wrap justify-center items-center">
+            <span className="text-l font-bold mr-2">Tag Filters: </span>
+            <div className="flex flex-wrap justify-center items-center gap-2">
               {selectedTags.map((tag) => (
                 <BtnTag
                   key={tag}

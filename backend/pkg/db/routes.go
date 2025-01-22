@@ -8,11 +8,13 @@ func InitializeRoutes() *mux.Router {
     router := mux.NewRouter()
 
     // User routes
-    router.HandleFunc("/users", GetUsers).Methods("GET")
-    router.HandleFunc("/users/{id}", GetUser).Methods("GET")
-    router.HandleFunc("/users", CreateUser).Methods("POST")
-    router.HandleFunc("/users/{id}", UpdateUser).Methods("PUT")
-    router.HandleFunc("/users/{id}", DeleteUser).Methods("DELETE")
+    router.HandleFunc("/register", RegisterUser).Methods("POST")
+    router.HandleFunc("/login", LoginUser).Methods("POST")
+    // router.HandleFunc("/users", GetUsers).Methods("GET")
+    // router.HandleFunc("/users/{id}", GetUser).Methods("GET")
+    // router.HandleFunc("/users", CreateUser).Methods("POST")
+    // router.HandleFunc("/users/{id}", UpdateUser).Methods("PUT")
+    // router.HandleFunc("/users/{id}", DeleteUser).Methods("DELETE")
 
     // Thread routes
     router.HandleFunc("/threads", GetThreads).Methods("GET")
