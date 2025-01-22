@@ -22,10 +22,36 @@ func GetThread(w http.ResponseWriter, r *http.Request) {
     json.NewEncoder(w).Encode(thread)
 }
 
+type CreateThreadInput struct {
+    Title    string `json:"title"`
+    Content  string `json:"content"`
+    Username string `json:"username"`
+}
+
 func CreateThread(w http.ResponseWriter, r *http.Request) {
-    var thread Thread
-    json.NewDecoder(r.Body).Decode(&thread)
-    db.Create(&thread)
+    var input CreateThreadInput
+    if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+
+    var user User
+    if err := db.Where("username = ?", input.Username).First(&user).Error; err != nil {
+        http.Error(w, "User not found", http.StatusBadRequest)
+        return
+    }
+
+    thread := Thread{
+        Title:   input.Title,
+        Content: input.Content,
+        UserID:  user.ID,
+    }
+
+    if err := db.Create(&thread).Error; err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
     json.NewEncoder(w).Encode(thread)
 }
 

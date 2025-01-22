@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { IoIosAdd } from "react-icons/io";
+import { CiUser } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
@@ -42,7 +43,9 @@ const Header: React.FC = () => {
         </Button> */}
         {username ? (
           <div className="flex items-center">
-            <span className="mr-4">Welcome, {username}</span>
+            <span className="mr-4 inline-flex items-center text-gray-600">
+              <CiUser className="mr-1" size={20} /> Welcome, {username}
+            </span>
             <Button onClick={handleLogout} variant="outline">
               Logout
             </Button>

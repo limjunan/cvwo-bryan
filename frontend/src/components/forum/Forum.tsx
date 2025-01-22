@@ -5,6 +5,10 @@ import BtnTag from "./BtnTag";
 import Thread from "./Thread";
 import TagSidebar from "./Tag-Sidebar";
 import api from "../../services/api";
+import { Button } from "../ui/button";
+import { FaPen } from "react-icons/fa";
+import Footer from "../Footer";
+import AddThread from "./Add-Thread";
 
 interface Tag {
   ID: number;
@@ -74,10 +78,17 @@ const Forum: React.FC = () => {
     <div>
       <Header />
       <div className="container mx-auto py-6 flex">
-        <div className="w-3/4">
-          <h1 className="text-3xl font-bold">Threads</h1>
+        <div className="w-2/3 pr-8">
+          {/* <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold">Threads</h1>
+            <Button className="ml-4">
+              <FaPen className="inline-block mr-2" />
+              Create Thread
+            </Button>
+          </div> */}
+
           <div className="my-4 flex flex-row items-center">
-            <span className="text-l font-bold mr-2">Tag Filters: </span>
+            <span className="text-xl font-bold mr-2">Tag Filters: </span>
             <div className="flex flex-wrap justify-center items-center gap-2">
               {selectedTags.map((tag) => (
                 <BtnTag
@@ -104,10 +115,12 @@ const Forum: React.FC = () => {
             />
           ))}
         </div>
-        <div className="w-1/4">
+        <div className="w-1/3">
           <TagSidebar selectedTags={selectedTags} onTagClick={handleTagClick} />
+          <AddThread />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
