@@ -69,7 +69,6 @@ const AddThread: React.FC = () => {
       });
       console.log("Thread created:", response.data);
       setSuccess("Thread posted!");
-      // Optionally, you can refresh the threads list or navigate to the new thread
     } catch (error) {
       console.error("There was an error creating the thread!", error);
       setError("There was an error creating the thread!");

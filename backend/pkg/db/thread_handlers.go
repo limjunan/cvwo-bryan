@@ -10,7 +10,7 @@ import (
 
 func GetThreads(w http.ResponseWriter, r *http.Request) {
     var threads []Thread
-    db.Preload("User").Preload("Tags").Preload("Comments").Find(&threads)
+    db.Preload("User").Preload("Tags").Preload("Comments").Order("created_at desc").Find(&threads)
     json.NewEncoder(w).Encode(threads)
 }
 
