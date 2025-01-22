@@ -33,5 +33,6 @@ type Comment struct {
 type Tag struct {
     gorm.Model
     Name    string `gorm:"unique"`
+    Color   string
     Threads []Thread `gorm:"many2many:thread_tags;"`
 }

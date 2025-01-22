@@ -19,9 +19,11 @@ func Seed(DB *gorm.DB) {
 
     // Create initial tags
     tags := []Tag{
-        {Name: "Tag1"},
-        {Name: "Tag2"},
-        {Name: "Tag3"},
+        {Name: "Tag1", Color: "#FFB3BA"}, // Pastel Red
+        {Name: "Tag2", Color: "#BFFCC6"}, // Pastel Green
+        {Name: "Tag3", Color: "#B3E5FC"}, // Pastel Blue
+        {Name: "Tag4", Color: "#FFDFBA"}, // Pastel Orange
+        {Name: "Tag5", Color: "#FFFFBA"}, // Pastel Yellow
     }
     for _, tag := range tags {
         if err := DB.Create(&tag).Error; err != nil {
