@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import api from "../../services/api";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +13,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Link } from "react-router-dom";
 
 const formSchema = z.object({
@@ -22,7 +22,7 @@ const formSchema = z.object({
   }),
 });
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const [error, setError] = useState("");
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -32,14 +32,17 @@ const Login: React.FC = () => {
     },
   });
 
-  const handleLogin = async (values: z.infer<typeof formSchema>) => {
+  const handleRegister = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await api.post("/login", values);
-      console.log("User logged in:", response.data);
-      localStorage.setItem("token", response.data.token);
+      const response = await api.post("/register", values);
+      console.log("User registered:", response.data);
+      // Optionally, you can log the user in automatically after registration
+      const loginResponse = await api.post("/login", values);
+      const { token } = loginResponse.data;
+      localStorage.setItem("token", token);
       window.location.href = "/forum";
     } catch (err) {
-      setError("Invalid username");
+      setError("Registration failed");
     }
   };
 
@@ -47,11 +50,13 @@ const Login: React.FC = () => {
     <div className="container mx-auto py-6 flex justify-center items-center min-h-screen">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold">Login to Gossip</CardTitle>
+          <CardTitle className="text-3xl font-bold">
+            Register for Gossip
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleLogin)}>
+            <form onSubmit={form.handleSubmit(handleRegister)}>
               <FormField
                 control={form.control}
                 name="username"
@@ -76,14 +81,14 @@ const Login: React.FC = () => {
               />
               {error && <p className="text-red-500 text-xs italic">{error}</p>}
               <div className="flex items-center justify-between mt-4">
-                <Button type="submit">Login</Button>
+                <Button type="submit">Register</Button>
               </div>
             </form>
           </Form>
           <p className="mt-4">
-            Don't have an account?{" "}
-            <Link to="/register" className="text-blue-500 hover:underline">
-              Register
+            Already have an account?{" "}
+            <Link to="/login" className="text-blue-500 hover:underline">
+              Login
             </Link>
           </p>
         </CardContent>
@@ -92,4 +97,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Register;

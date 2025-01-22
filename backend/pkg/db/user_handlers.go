@@ -41,7 +41,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
     expirationTime := time.Now().Add(24 * time.Hour)
     claims := &Claims{
-        Username: credentials.Username,
+        Username: user.Username,
         StandardClaims: jwt.StandardClaims{
             ExpiresAt: expirationTime.Unix(),
         },
@@ -54,13 +54,11 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    http.SetCookie(w, &http.Cookie{
-        Name:    "token",
-        Value:   tokenString,
-        Expires: expirationTime,
-    })
-
-    json.NewEncoder(w).Encode(user)
+    // Return the token in the response
+    response := map[string]string{
+        "token": tokenString,
+    }
+    json.NewEncoder(w).Encode(response)
 }
 
 func Authenticate(next http.Handler) http.Handler {
