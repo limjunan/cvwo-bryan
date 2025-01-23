@@ -24,11 +24,11 @@ func InitializeRoutes() *mux.Router {
     router.HandleFunc("/threads/{id}", DeleteThread).Methods("DELETE")
 
     // Comment routes
-    router.HandleFunc("/comments", GetComments).Methods("GET")
-    router.HandleFunc("/comments/{id}", GetComment).Methods("GET")
-    router.HandleFunc("/comments", CreateComment).Methods("POST")
-    router.HandleFunc("/comments/{id}", UpdateComment).Methods("PUT")
-    router.HandleFunc("/comments/{id}", DeleteComment).Methods("DELETE")
+    router.HandleFunc("/threads/{id}/comments", GetComments).Methods("GET")
+    router.HandleFunc("/threads/{id}/comments/{commentId}", GetComment).Methods("GET")
+    router.HandleFunc("/threads/{id}/comments", CreateComment).Methods("POST")
+    router.HandleFunc("/threads/{id}/comments/{commentId}", UpdateComment).Methods("PUT")
+    router.HandleFunc("/threads/{id}/comments/{commentId}", DeleteComment).Methods("DELETE")
 
     // Tag routes
     router.HandleFunc("/tags", GetTags).Methods("GET")

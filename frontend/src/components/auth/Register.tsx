@@ -35,8 +35,6 @@ const Register: React.FC = () => {
   const handleRegister = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await api.post("/register", values);
-      console.log("User registered:", response.data);
-      // Optionally, you can log the user in automatically after registration
       const loginResponse = await api.post("/login", values);
       const { token } = loginResponse.data;
       localStorage.setItem("token", token);

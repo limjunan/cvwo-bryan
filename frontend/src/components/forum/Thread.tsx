@@ -20,6 +20,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 interface Comment {
   ID: number;
@@ -60,6 +62,8 @@ const Thread: React.FC<ThreadProps> = ({
   comments,
 }) => {
   const [loggedInUsername, setLoggedInUsername] = useState<string | null>(null);
+  const [newComment, setNewComment] = useState<string>("");
+  const [commentList, setCommentList] = useState<Comment[]>(comments || []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -75,6 +79,21 @@ const Thread: React.FC<ThreadProps> = ({
       window.location.reload(); // Refresh the page after deletion
     } catch (error) {
       console.error("There was an error deleting the thread!", error);
+    }
+  };
+
+  const handleAddComment = async () => {
+    if (!newComment.trim()) return;
+
+    try {
+      const response = await api.post(`/threads/${ID}/comments`, {
+        content: newComment,
+        username: loggedInUsername,
+      });
+      setCommentList([...commentList, response.data]);
+      setNewComment("");
+    } catch (error) {
+      console.error("There was an error adding the comment!", error);
     }
   };
 
@@ -153,6 +172,17 @@ const Thread: React.FC<ThreadProps> = ({
           </div>
         </div>
       )}
+      <div className="mt-4 flex items-center">
+        <Input
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          placeholder="Add a comment"
+          className="w-full"
+        />
+        <Button className="ml-1" variant={"outline"} onClick={handleAddComment}>
+          Comment
+        </Button>
+      </div>
     </div>
   );
 };
