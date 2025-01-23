@@ -11,17 +11,26 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormDescription,
   FormMessage,
 } from "../ui/form";
+import { Checkbox } from "../ui/checkbox";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { jwtDecode } from "jwt-decode";
 import { FaPen } from "react-icons/fa";
 import { FormError } from "../FormError";
 import { FormSuccess } from "../FormSuccess";
+import Tag from "./Tag";
 
 interface DecodedToken {
   username: string;
+}
+
+interface Tag {
+  ID: number;
+  Name: string;
+  Color: string;
 }
 
 const formSchema = z.object({
@@ -31,12 +40,27 @@ const formSchema = z.object({
   content: z.string().min(10, {
     message: "Content must be at least 10 characters.",
   }),
+  tags: z.array(z.number()), // Array of tag IDs
 });
 
 const AddThread: React.FC = () => {
   const [username, setUsername] = useState<string | null>(null);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+  const [allTags, setAllTags] = useState<Tag[]>([]);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const response = await api.get("/tags");
+        setAllTags(response.data);
+      } catch (error) {
+        console.error("There was an error fetching the tags!", error);
+      }
+    };
+
+    fetchTags();
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -51,6 +75,7 @@ const AddThread: React.FC = () => {
     defaultValues: {
       title: "",
       content: "",
+      tags: [],
     },
   });
 
@@ -66,6 +91,7 @@ const AddThread: React.FC = () => {
         title: values.title,
         content: values.content,
         username: username,
+        tags: values.tags,
       });
       console.log("Thread created:", response.data);
       setSuccess("Thread posted!");
@@ -123,6 +149,46 @@ const AddThread: React.FC = () => {
                         {form.formState.errors.content?.message}
                       </FormMessage>
                     )}
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="tags"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="mb-4">
+                      <FormLabel className="text-base">Tags</FormLabel>
+                      <FormDescription>
+                        Select the tags for the thread.
+                      </FormDescription>
+                    </div>
+                    <div className="flex flex-wrap gap-4">
+                      {allTags.map((item) => (
+                        <FormItem
+                          key={item.ID}
+                          className="flex flex-row items-start space-x-3 space-y-0"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value?.includes(item.ID)}
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([...field.value, item.ID])
+                                  : field.onChange(
+                                      field.value.filter(
+                                        (value: number) => value !== item.ID
+                                      )
+                                    );
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel>
+                            <Tag name={item.Name} color={item.Color} />
+                          </FormLabel>
+                        </FormItem>
+                      ))}
+                    </div>
                   </FormItem>
                 )}
               />

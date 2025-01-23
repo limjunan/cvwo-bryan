@@ -26,6 +26,7 @@ type CreateThreadInput struct {
     Title    string `json:"title"`
     Content  string `json:"content"`
     Username string `json:"username"`
+    Tags     []int  `json:"tags"` // Change to []int to accept array of numbers
 }
 
 func CreateThread(w http.ResponseWriter, r *http.Request) {
@@ -41,10 +42,17 @@ func CreateThread(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+    var tags []Tag
+    if err := db.Where("id IN ?", input.Tags).Find(&tags).Error; err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+
     thread := Thread{
         Title:   input.Title,
         Content: input.Content,
         UserID:  user.ID,
+        Tags:    tags,
     }
 
     if err := db.Create(&thread).Error; err != nil {
