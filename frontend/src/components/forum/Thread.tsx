@@ -45,6 +45,7 @@ interface ThreadProps {
   createdAt: string;
   updatedAt: string;
   comments: Comment[] | null;
+  onPost: () => void;
 }
 
 interface DecodedToken {
@@ -60,6 +61,7 @@ const Thread: React.FC<ThreadProps> = ({
   createdAt,
   updatedAt,
   comments,
+  onPost,
 }) => {
   const [loggedInUsername, setLoggedInUsername] = useState<string | null>(null);
   const [newComment, setNewComment] = useState<string>("");
@@ -76,7 +78,7 @@ const Thread: React.FC<ThreadProps> = ({
   const handleDelete = async () => {
     try {
       await api.delete(`/threads/${ID}`);
-      window.location.reload(); // Refresh the page after deletion
+      onPost();
     } catch (error) {
       console.error("There was an error deleting the thread!", error);
     }
@@ -86,12 +88,15 @@ const Thread: React.FC<ThreadProps> = ({
     if (!newComment.trim()) return;
 
     try {
-      const response = await api.post(`/threads/${ID}/comments`, {
+      await api.post(`/threads/${ID}/comments`, {
         content: newComment,
         username: loggedInUsername,
       });
-      setCommentList([...commentList, response.data]);
       setNewComment("");
+      // Fetch the latest comments after posting a new comment
+      const response = await api.get(`/threads/${ID}/comments`);
+      setCommentList(response.data);
+      onPost();
     } catch (error) {
       console.error("There was an error adding the comment!", error);
     }

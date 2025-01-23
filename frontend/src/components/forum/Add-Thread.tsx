@@ -43,7 +43,7 @@ const formSchema = z.object({
   tags: z.array(z.number()), // Array of tag IDs
 });
 
-const AddThread: React.FC = () => {
+const AddThread: React.FC<{ onPost: () => void }> = ({ onPost }) => {
   const [username, setUsername] = useState<string | null>(null);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -95,6 +95,8 @@ const AddThread: React.FC = () => {
       });
       console.log("Thread created:", response.data);
       setSuccess("Thread posted!");
+      onPost();
+      form.reset();
     } catch (error) {
       console.error("There was an error creating the thread!", error);
       setError("There was an error creating the thread!");

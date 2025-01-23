@@ -44,17 +44,25 @@ const Forum: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const fetchThreads = async () => {
-      const response = await api.get("/threads");
-      setThreads(response.data);
-    };
-
     const token = localStorage.getItem("token");
     if (token) {
       setIsAuthenticated(true);
       fetchThreads();
     }
   }, []);
+
+  const fetchThreads = async () => {
+    try {
+      const response = await api.get("/threads");
+      setThreads(response.data);
+    } catch (error) {
+      console.error("There was an error fetching the threads!", error);
+    }
+  };
+
+  const handlePost = async () => {
+    await fetchThreads();
+  };
 
   const handleTagClick = (tag: Tag) => {
     setSelectedTags((prevTags) =>
@@ -79,14 +87,6 @@ const Forum: React.FC = () => {
       <Header />
       <div className="container mx-auto py-6 flex">
         <div className="w-2/3 pr-8">
-          {/* <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold">Threads</h1>
-            <Button className="ml-4">
-              <FaPen className="inline-block mr-2" />
-              Create Thread
-            </Button>
-          </div> */}
-
           <div className="my-4 flex flex-row items-center">
             <span className="text-xl font-bold mr-2">Tag Filters: </span>
             <div className="flex flex-wrap justify-center items-center gap-2">
@@ -112,12 +112,13 @@ const Forum: React.FC = () => {
               createdAt={thread.CreatedAt}
               updatedAt={thread.UpdatedAt}
               comments={thread.Comments}
+              onPost={handlePost}
             />
           ))}
         </div>
         <div className="w-1/3">
           <TagSidebar selectedTags={selectedTags} onTagClick={handleTagClick} />
-          <AddThread />
+          <AddThread onPost={handlePost} />
         </div>
       </div>
       <Footer />
