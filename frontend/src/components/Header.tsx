@@ -6,7 +6,12 @@ import { CiUser } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  searchQuery: string;
+  setSearchQuery: (searchQuery: string) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ searchQuery, setSearchQuery }) => {
   const [username, setUsername] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -37,10 +42,15 @@ const Header: React.FC = () => {
     <header className="text-black">
       <div className="container mx-auto py-4 flex flex-row items-center justify-between">
         <h1 className="text-4xl font-bold">Gossip for CVWO</h1>
-        <Input placeholder="Search" className="w-1/2" />
-        {/* <Button className="ml-2" variant="outline">
-          <IoIosAdd size={32} /> Create Thread
-        </Button> */}
+        <Input
+          value={searchQuery}
+          placeholder="Search"
+          className="w-1/2"
+          onChange={(e) => {
+            console.log("Search query:", e.currentTarget.value);
+            setSearchQuery(e.currentTarget.value);
+          }}
+        />
         {username ? (
           <div className="flex items-center">
             <span className="mr-4 inline-flex items-center text-gray-600">

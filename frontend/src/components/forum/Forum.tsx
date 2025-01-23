@@ -42,6 +42,7 @@ const Forum: React.FC = () => {
   const [threads, setThreads] = useState<Thread[]>([]);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -72,11 +73,17 @@ const Forum: React.FC = () => {
     );
   };
 
-  const filteredThreads = threads.filter((thread) =>
-    selectedTags.every((tag) =>
-      thread.Tags.some((threadTag) => threadTag.Name === tag.Name)
-    )
-  );
+  const filteredThreads = threads.filter((thread) => {
+    const matchesSearchQuery =
+      thread.Title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      thread.Content.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesTags =
+      selectedTags.length === 0 ||
+      thread.Tags.some((tag) =>
+        selectedTags.some((selectedTag) => selectedTag.ID === tag.ID)
+      );
+    return matchesSearchQuery && matchesTags;
+  });
 
   if (!isAuthenticated) {
     return <Login />;
@@ -84,7 +91,7 @@ const Forum: React.FC = () => {
 
   return (
     <div>
-      <Header />
+      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="container mx-auto py-6 flex">
         <div className="w-2/3 pr-8">
           <div className="my-4 flex flex-row items-center">

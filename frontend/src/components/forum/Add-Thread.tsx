@@ -18,7 +18,7 @@ import { Checkbox } from "../ui/checkbox";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { jwtDecode } from "jwt-decode";
-import { FaPen } from "react-icons/fa";
+import { FaPen, FaPlug, FaPlus } from "react-icons/fa";
 import { FormError } from "../FormError";
 import { FormSuccess } from "../FormSuccess";
 import Tag from "./Tag";
@@ -160,7 +160,7 @@ const AddThread: React.FC<{ onPost: () => void }> = ({ onPost }) => {
                 render={({ field }) => (
                   <FormItem>
                     <div className="mb-4">
-                      <FormLabel className="text-base">Tags</FormLabel>
+                      <FormLabel>Tags</FormLabel>
                       <FormDescription>
                         Select the tags for the thread.
                       </FormDescription>
@@ -194,9 +194,9 @@ const AddThread: React.FC<{ onPost: () => void }> = ({ onPost }) => {
                   </FormItem>
                 )}
               />
-              <div className="flex items-center justify-between mt-4">
+              <div className="flex items-center justify-left mt-4">
                 <Button type="submit">
-                  <FaPen className="inline-block mr-2" />
+                  <FaPlus className="inline-block mr-2" />
                   Post Thread
                 </Button>
               </div>

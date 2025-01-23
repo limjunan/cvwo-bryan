@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Tag from "./Tag";
 import api from "../../services/api";
 import { jwtDecode } from "jwt-decode";
-import { MdDeleteOutline } from "react-icons/md";
+import { MdDeleteOutline, MdModeEdit } from "react-icons/md";
 import {
   Tooltip,
   TooltipContent,
@@ -22,6 +22,7 @@ import {
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { IoMdSend } from "react-icons/io";
 
 interface Comment {
   ID: number;
@@ -107,39 +108,44 @@ const Thread: React.FC<ThreadProps> = ({
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold mb-2">{title}</h2>
         {user.Username === loggedInUsername && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <button className="text-red-500">
-                      <MdDeleteOutline size={24} />
-                    </button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you absolutely sure?
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete this thread.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleDelete}>
-                        Delete
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Delete this thread</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <div className="flex space-x-2">
+            <button>
+              <MdModeEdit size={20} />
+            </button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <button className="text-red-500">
+                        <MdDeleteOutline size={24} />
+                      </button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete this thread.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleDelete}>
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Delete this thread</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         )}
       </div>
       <p className="text-gray-700 mb-4">{content}</p>
@@ -166,11 +172,46 @@ const Thread: React.FC<ThreadProps> = ({
             {comments.map((comment) => (
               <div key={comment.ID} className="pt-2 mt-2">
                 <p className="text-sm text-gray-700">{comment.Content}</p>
-                <div className="text-sm text-gray-500">
-                  <span>Posted by {comment.User.Username}</span> |{" "}
+                <div className="text-sm text-gray-500 flex justify-between items-center">
                   <span>
-                    Created at: {new Date(comment.CreatedAt).toLocaleString()}
+                    Posted by {comment.User.Username} | Created at:{" "}
+                    {new Date(comment.CreatedAt).toLocaleString()}
                   </span>
+                  {comment.User.Username === loggedInUsername && (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <button className="text-red-500">
+                                <MdDeleteOutline size={16} />
+                              </button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Are you absolutely sure?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This action cannot be undone. This will
+                                  permanently delete this comment.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={handleDelete}>
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Delete this comment</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
                 </div>
               </div>
             ))}
@@ -185,7 +226,7 @@ const Thread: React.FC<ThreadProps> = ({
           className="w-full"
         />
         <Button className="ml-1" variant={"outline"} onClick={handleAddComment}>
-          Comment
+          <IoMdSend />
         </Button>
       </div>
     </div>
