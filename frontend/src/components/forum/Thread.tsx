@@ -23,6 +23,8 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { IoMdSend } from "react-icons/io";
+import { Edit } from "lucide-react";
+import EditThread from "./Edit-Thread";
 
 interface Comment {
   ID: number;
@@ -109,17 +111,21 @@ const Thread: React.FC<ThreadProps> = ({
         <h2 className="text-2xl font-bold mb-2">{title}</h2>
         {user.Username === loggedInUsername && (
           <div className="flex space-x-2">
-            <button>
-              <MdModeEdit size={20} />
-            </button>
+            <EditThread
+              ID={ID}
+              title={title}
+              content={content}
+              tags={tags}
+              onPost={onPost}
+            />
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <button className="text-red-500">
+                      <Button variant={"outline"} className="p-2 text-red-500">
                         <MdDeleteOutline size={24} />
-                      </button>
+                      </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
