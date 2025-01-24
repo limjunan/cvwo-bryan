@@ -120,6 +120,12 @@ export DB_SSLMODE=disable
 export DB_TIMEZONE=Asia/Shanghai
 ```
 
+5. Source the environment variables:
+
+   ```sh
+   source .env.local
+   ```
+
 ### Running the Application
 
 1. Start the backend server and seed the database:
