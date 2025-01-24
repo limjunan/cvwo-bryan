@@ -6,7 +6,7 @@ import (
 
 type User struct {
     gorm.Model
-    Username string `gorm:"unique"`
+    Username string
     Threads  []Thread
     Comments []Comment
 }
@@ -18,7 +18,7 @@ type Thread struct {
     UserID   uint
     User     User
     Tags     []Tag `gorm:"many2many:thread_tags;"`
-    Comments []Comment
+    Comments []Comment `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 type Comment struct {
@@ -27,12 +27,11 @@ type Comment struct {
     UserID   uint
     User     User
     ThreadID uint
-    Thread   Thread
 }
 
 type Tag struct {
     gorm.Model
-    Name    string `gorm:"unique"`
+    Name    string
     Color   string
     Threads []Thread `gorm:"many2many:thread_tags;"`
 }

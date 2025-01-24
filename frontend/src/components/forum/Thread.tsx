@@ -87,6 +87,18 @@ const Thread: React.FC<ThreadProps> = ({
     }
   };
 
+  const handleCommentDelete = async (commentId: number) => {
+    try {
+      console.log("Deleting comment with ID:", commentId);
+      console.log("Thread ID:", ID);
+      const response = await api.delete(`/threads/${ID}/comments/${commentId}`);
+      console.log("Comment deleted:", response);
+      onPost();
+    } catch (error) {
+      console.error("There was an error deleting the comment!", error);
+    }
+  };
+
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
 
@@ -205,7 +217,11 @@ const Thread: React.FC<ThreadProps> = ({
                               </AlertDialogHeader>
                               <AlertDialogFooter>
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={handleDelete}>
+                                <AlertDialogAction
+                                  onClick={() =>
+                                    handleCommentDelete(comment.ID)
+                                  }
+                                >
                                   Delete
                                 </AlertDialogAction>
                               </AlertDialogFooter>

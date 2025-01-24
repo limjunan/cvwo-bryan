@@ -4,7 +4,7 @@ import (
     "encoding/json"
     "net/http"
     "strconv"
-
+    "gorm.io/gorm"
     "github.com/gorilla/mux"
 )
 
@@ -72,8 +72,31 @@ func UpdateComment(w http.ResponseWriter, r *http.Request) {
 
 func DeleteComment(w http.ResponseWriter, r *http.Request) {
     params := mux.Vars(r)
-    id, _ := strconv.Atoi(params["id"])
+    threadID, err := strconv.Atoi(params["id"])
+    if err != nil {
+        http.Error(w, "Invalid thread ID", http.StatusBadRequest)
+        return
+    }
+    commentID, err := strconv.Atoi(params["commentId"])
+    if err != nil {
+        http.Error(w, "Invalid comment ID", http.StatusBadRequest)
+        return
+    }
+
     var comment Comment
-    db.Delete(&comment, id)
+    if err := db.Where("thread_id = ? AND id = ?", threadID, commentID).First(&comment).Error; err != nil {
+        if err == gorm.ErrRecordNotFound {
+            http.Error(w, "Comment not found", http.StatusNotFound)
+        } else {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+        }
+        return
+    }
+
+    if err := db.Delete(&comment).Error; err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
     json.NewEncoder(w).Encode("Comment deleted successfully")
 }
