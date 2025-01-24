@@ -1,5 +1,7 @@
 # Gossip for CVWO
 
+![Homepage](images/homepage.png)
+
 This is a forum application built with React and TypeScript for the frontend, and Go with GORM for the backend. It allows users to register, log in, and participate in discussions by creating threads and posting comments. The application also supports tag-based filtering and pagination for threads.
 
 ## Features
