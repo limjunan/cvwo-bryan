@@ -127,7 +127,7 @@ Navigate to the registration page by clicking on the "Register" link.
 Fill in the required fields (username) and submit the form.
 You will be redirected to the forum page upon successful registration.
 
-![Register Page](images/register.png)
+<img src="images/register.png" alt="Register Page" width="300"/>
 
 ### Logging In
 
@@ -135,14 +135,14 @@ Navigate to the login page by clicking on the "Login" link.
 Enter your username, then submit the form.
 Upon successful login, you will be redirected to the forum page.
 
-![Login Page](images/login.png)
+<img src="images/login.png" alt="Login Page" width="300"/>
 
 ### Creating a New Thread
 
 On the forum page, fill in the thread title, content, and select relevant tags on the sidebar.
 Submit the form to create the new thread.
 
-![Posting a Thread](images/post-thread.png)
+<img src="images/post-thread.png" alt="Posting a Thread" width="300"/>
 
 ### Posting a Comment
 
@@ -169,4 +169,6 @@ The threads list will update to show only threads that match the search query.
 There will be delete/edit icons on thread/comments that have been posted by you.
 Click on these icons.
 
-![Editing a Thread](images/edit-thread.png)
+<img src="images/edit-thread.png" alt="Editing a Thread" width="300"/>
+
+![Deleting a Thread](images/delete-thread.png)
