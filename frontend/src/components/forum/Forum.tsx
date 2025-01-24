@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import Header from "../Header";
 import Login from "../auth/Login";
 import BtnTag from "./BtnTag";
-import Thread from "./Thread";
 import TagSidebar from "./Tag-Sidebar";
 import api from "../../services/api";
-import { Button } from "../ui/button";
-import { FaPen } from "react-icons/fa";
 import Footer from "../Footer";
 import AddThread from "./Add-Thread";
+import ThreadPage from "./ThreadPage";
 
 interface Tag {
   ID: number;
@@ -43,6 +41,8 @@ const Forum: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const threadsPerPage = 5;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -108,20 +108,13 @@ const Forum: React.FC = () => {
               ))}
             </div>
           </div>
-          {filteredThreads.map((thread) => (
-            <Thread
-              ID={thread.ID}
-              key={thread.ID}
-              title={thread.Title}
-              content={thread.Content}
-              user={thread.User}
-              tags={thread.Tags}
-              createdAt={thread.CreatedAt}
-              updatedAt={thread.UpdatedAt}
-              comments={thread.Comments}
-              onPost={handlePost}
-            />
-          ))}
+          <ThreadPage
+            threads={filteredThreads}
+            threadsPerPage={threadsPerPage}
+            currentPage={currentPage}
+            paginate={setCurrentPage}
+            onPost={handlePost}
+          />
         </div>
         <div className="w-1/3">
           <TagSidebar selectedTags={selectedTags} onTagClick={handleTagClick} />
