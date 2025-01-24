@@ -28,6 +28,7 @@ This is a forum application built with React and TypeScript for the frontend, an
 
 - Go
 - [GORM (Go ORM)](https://gorm.io/index.html)
+- [PostgreSQL](https://www.postgresql.org)
 
 ## Getting Started
 
@@ -35,6 +36,72 @@ This is a forum application built with React and TypeScript for the frontend, an
 
 - Node.js and npm installed on your machine
 - Go installed on your machine
+- PostgreSQL installed and running
+
+### PostgreSQL Setup
+
+1. Install PostgreSQL:
+
+   - **Ubuntu**:
+
+     ```sh
+     sudo apt update
+     sudo apt install postgresql postgresql-contrib
+     ```
+
+   - **MacOS** (using Homebrew):
+
+     ```sh
+     brew install postgresql
+     ```
+
+   - **Windows**:
+     Download and install PostgreSQL from the [official website](https://www.postgresql.org/download/).
+
+2. Start the PostgreSQL service:
+
+   - **Ubuntu**:
+
+     ```sh
+     sudo service postgresql start
+     ```
+
+   - **MacOS**:
+
+     ```sh
+     brew services start postgresql
+     ```
+
+   - **Windows**:
+     Start the PostgreSQL service from the Services application.
+
+3. Create a new PostgreSQL user and database:
+
+   ```sh
+   sudo -u postgres psql
+   ```
+
+   In the PostgreSQL shell, run the following commands:
+
+   ```sh
+   CREATE USER yourusername WITH PASSWORD 'yourpassword';
+   CREATE DATABASE yourdatabase;
+   GRANT ALL PRIVILEGES ON DATABASE yourdatabase TO yourusername;
+   ```
+
+   4. Set up environment variables:
+
+Create a .env.local file in the root of your project and add the following environment variables:
+
+```env
+export DB_HOST=localhost
+export DB_USER=yourusername
+export DB_PASSWORD=yourpassword
+export DB_NAME=yourdatabase
+export DB_PORT=5432
+export DB_SSLMODE=disable
+export DB_TIMEZONE=Asia/Shanghai
+```
 
 ### Installation
 
