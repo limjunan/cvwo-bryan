@@ -38,6 +38,23 @@ This is a forum application built with React and TypeScript for the frontend, an
 - Go installed on your machine
 - PostgreSQL installed and running
 
+### Installation
+
+1. Clone the repository:
+
+   ```sh
+   git clone https://github.com/limjunan/cvwo-bryan.git
+   cd cvwo-bryan
+   ```
+
+2. Install the frontend and backend dependencies:
+
+   ```sh
+   go mod tidy
+   cd frontend
+   npm install
+   ```
+
 ### PostgreSQL Setup
 
 1. Install PostgreSQL:
@@ -102,23 +119,6 @@ export DB_PORT=5432
 export DB_SSLMODE=disable
 export DB_TIMEZONE=Asia/Shanghai
 ```
-
-### Installation
-
-1. Clone the repository:
-
-   ```sh
-   git clone https://github.com/limjunan/cvwo-bryan.git
-   cd cvwo-bryan
-   ```
-
-2. Install the frontend and backend dependencies:
-
-   ```sh
-   go mod tidy
-   cd frontend
-   npm install
-   ```
 
 ### Running the Application
 
