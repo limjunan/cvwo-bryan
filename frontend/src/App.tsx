@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import UserList from "./components/UserList";
 import Forum from "./components/forum/Forum";
 import Login from "./components/auth/Login";
@@ -14,6 +19,7 @@ const App: React.FC = () => {
           <Route path="/forum" element={<Forum />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Navigate to="/forum" />} />
         </Routes>
       </div>
     </Router>
