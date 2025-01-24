@@ -9,7 +9,7 @@ This is a forum application built with React and TypeScript for the frontend, an
 - Post and delete comments
 - Tag-based filtering of threads
 - Pagination for threads
-- Responsive design with Tailwind CSS
+- Responsive design with [Tailwind CSS](https://tailwindcss.com)
 
 ## Technologies Used
 
@@ -20,11 +20,12 @@ This is a forum application built with React and TypeScript for the frontend, an
 - Tailwind CSS
 - React Router
 - Axios
+- [shadcn/ui](https://ui.shadcn.com)
 
 ### Backend
 
 - Go
-- GORM (Go ORM)
+- [GORM (Go ORM)](https://gorm.io/index.html)
 
 ## Getting Started
 
@@ -45,8 +46,9 @@ This is a forum application built with React and TypeScript for the frontend, an
 2. Install the frontend and backend dependencies:
 
    ```sh
-   npm install
    go mod tidy
+   cd frontend
+   npm install
    ```
 
 ### Running the Application
@@ -125,32 +127,46 @@ Navigate to the registration page by clicking on the "Register" link.
 Fill in the required fields (username) and submit the form.
 You will be redirected to the forum page upon successful registration.
 
+![Register Page](images/register.png)
+
 ### Logging In
 
 Navigate to the login page by clicking on the "Login" link.
 Enter your username, then submit the form.
 Upon successful login, you will be redirected to the forum page.
 
+![Login Page](images/login.png)
+
 ### Creating a New Thread
 
 On the forum page, fill in the thread title, content, and select relevant tags on the sidebar.
 Submit the form to create the new thread.
 
+![Posting a Thread](images/post-thread.png)
+
 ### Posting a Comment
 
 Enter your comment in the input field at the bottom of a thread and submit the form.
+
+![Thread Example](images/thread.png)
 
 ### Filtering Threads by Tags
 
 On the forum page, select tags from the sidebar to filter threads.
 The threads list will update to show only threads with the selected tags.
 
+![Filtering Threads](images/filters.png)
+
 ### Searching Threads
 
 Use the search bar in the header to search for threads by title or content.
 The threads list will update to show only threads that match the search query.
 
+![Search](images/search.png)
+
 ### Deleting/Editing Threads and Comments
 
 There will be delete/edit icons on thread/comments that have been posted by you.
 Click on these icons.
+
+![Editing a Thread](images/edit-thread.png)
