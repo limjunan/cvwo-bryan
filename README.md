@@ -95,7 +95,7 @@ This is a forum application built with React and TypeScript for the frontend, an
 3. Create a new PostgreSQL user and database:
 
    ```sh
-   sudo -u postgres psql
+   psql postgres
    ```
 
    In the PostgreSQL shell, run the following commands:
