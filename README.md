@@ -116,3 +116,41 @@ Pagination is implemented in the Pagination component. The ThreadPage component 
 ### Tag Filtering and Search
 
 Tag filtering and Search is implemented in the Forum component. Users can filter threads by selecting tags from the sidebar, and search by using the searchbar in the header.
+
+## Usage Guide
+
+### Registering a New Account
+
+Navigate to the registration page by clicking on the "Register" link.
+Fill in the required fields (username) and submit the form.
+You will be redirected to the forum page upon successful registration.
+
+### Logging In
+
+Navigate to the login page by clicking on the "Login" link.
+Enter your username, then submit the form.
+Upon successful login, you will be redirected to the forum page.
+
+### Creating a New Thread
+
+On the forum page, fill in the thread title, content, and select relevant tags on the sidebar.
+Submit the form to create the new thread.
+
+### Posting a Comment
+
+Enter your comment in the input field at the bottom of a thread and submit the form.
+
+### Filtering Threads by Tags
+
+On the forum page, select tags from the sidebar to filter threads.
+The threads list will update to show only threads with the selected tags.
+
+### Searching Threads
+
+Use the search bar in the header to search for threads by title or content.
+The threads list will update to show only threads that match the search query.
+
+### Deleting/Editing Threads and Comments
+
+There will be delete/edit icons on thread/comments that have been posted by you.
+Click on these icons.
