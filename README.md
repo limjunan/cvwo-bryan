@@ -38,8 +38,8 @@ This is a forum application built with React and TypeScript for the frontend, an
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/yourusername/forum-app.git
-   cd forum-app
+   git clone https://github.com/limjunan/cvwo-bryan.git
+   cd cvwo-bryan
    ```
 
 2. Install the frontend and backend dependencies:
