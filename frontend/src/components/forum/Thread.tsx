@@ -177,8 +177,10 @@ const Thread: React.FC<ThreadProps> = ({
         ))}
       </div>
       <div className="text-sm text-gray-500 mb-2">
-        <span>Created at: {new Date(createdAt).toLocaleString()}</span> |{" "}
-        <span>Updated at: {new Date(updatedAt).toLocaleString()}</span>
+        <span>Posted on {new Date(createdAt).toLocaleString()}</span>
+        {createdAt !== updatedAt && (
+          <span> | Edited on {new Date(updatedAt).toLocaleString()}</span>
+        )}
       </div>
 
       {comments && comments.length > 0 && (
@@ -192,7 +194,7 @@ const Thread: React.FC<ThreadProps> = ({
                 <p className="text-sm text-gray-700">{comment.Content}</p>
                 <div className="text-sm text-gray-500 flex justify-between items-center">
                   <span>
-                    Posted by {comment.User.Username} | Created at:{" "}
+                    Commented by {comment.User.Username} on{" "}
                     {new Date(comment.CreatedAt).toLocaleString()}
                   </span>
                   {comment.User.Username === loggedInUsername && (
