@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Tag from "./Tag";
 import api from "../../services/api";
 import { jwtDecode } from "jwt-decode";
-import { MdDeleteOutline, MdModeEdit } from "react-icons/md";
+import { MdDeleteOutline } from "react-icons/md";
 import {
   Tooltip,
   TooltipContent,
@@ -23,7 +23,6 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { IoMdSend } from "react-icons/io";
-import { Edit } from "lucide-react";
 import EditThread from "./Edit-Thread";
 
 interface Comment {

@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "../ui/button";
-import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 interface PaginationProps {
